@@ -1,0 +1,25 @@
+name: Update Index
+
+on:
+  push:
+    branches: [ release ]
+    paths:
+      - '**.tgz'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+      - name: Helm Installation
+        uses: azure/setup-helm@v3
+      - name: Update Index
+        run: |
+          helm repo index . --url https://raw.githubusercontent.com/${{ github.repository }}/release
+          git config --global user.email "github-bot@1oop.io"
+          git config --global user.name "1oop Bot"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git add index.yaml
+          git commit -m "release: update chart index"
+          git push
