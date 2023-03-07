@@ -28,3 +28,4 @@ git checkout release
 git add $CHART_NAME-$CHART_VERSION.tgz
 git commit -m "release: $CHART_NAME-$CHART_VERSION"
 git push origin release
+git checkout main
