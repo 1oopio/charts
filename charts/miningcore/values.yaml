@@ -1,0 +1,190 @@
+# Default values for miningcore.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceMonitor:
+  enabled: false
+  jobLabel: miningcore
+  labels: {}
+
+common:
+  clusterName: default
+  apiPort: 5000
+
+stratum:
+  enabled: true
+  name: stratum
+  image:
+    repository: "ghcr.io/1oopio/miningcore"
+    pullPolicy: IfNotPresent
+    tag: ""
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations: {}
+  podSecurityContext:
+    fsGroup: 10001
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+    runAsGroup: 10001
+  stratum_ports:
+    - name: vardiff
+      containerPort: 4300
+      protocol: TCP
+      nodePort: 30000
+  service:
+    type: NodePort
+  resources:
+    requests:
+      cpu: 80m
+      memory: 300Mi
+    limits:
+      cpu: 100m
+      memory: 500Mi
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+    behavior:
+      scaleDown:
+        stabilizationWindowSeconds: 300
+        policies:
+          - type: Percent
+            value: 30
+            periodSeconds: 60
+      scaleUp:
+        stabilizationWindowSeconds: 0
+        policies:
+          - type: Percent
+            value: 30
+            periodSeconds: 15
+          - type: Pods
+            value: 4
+            periodSeconds: 15
+        selectPolicy: Min
+  podDisruptionBudget:
+    maxUnavailable: 50%
+  affinity: {}
+  dbConnSecret: mc-db-secret
+
+payout:
+  enabled: false
+  name: payout
+  image:
+    repository: "ghcr.io/1oopio/miningcore:pr-1"
+    pullPolicy: IfNotPresent
+    tag: ""
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500Mi
+    limits:
+      cpu: 1000m
+      memory: 2.0Gi
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations: {}
+  podSecurityContext:
+    fsGroup: 10001
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+    runAsGroup: 10001
+  podDisruptionBudget:
+    minAvailable: 100%
+  affinity: {}
+  dbConnSecret: mc-db-secret
+
+stats:
+  enabled: false
+  name: stats
+  image:
+    repository: "ghcr.io/1oopio/miningcore"
+    pullPolicy: IfNotPresent
+    tag: ""
+  replicaCount: 1
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations: {}
+  podSecurityContext:
+    fsGroup: 10001
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+    runAsGroup: 10001
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500Mi
+    limits:
+      cpu: 1000m
+      memory: 2.0Gi
+  affinity: {}
+  dbConnSecret: mc-db-secret
+
+config:
+  logging:
+    level: info
+    enableConsoleLog: true
+    enableConsoleColors: true
+    logFile:
+    apiLogFile:
+    logBaseDirectory:
+    perPoolLogFile: true
+  banning:
+    manager: Integrated
+    banOnJunkReceive: false
+    banOnInvalidShares: false
+    banOnLoginFailure: false
+  notifications:
+    enabled: false
+    email:
+      host: ""
+      port: 465
+      user: ""
+      password: ""
+      fromAddress: ""
+      fromName: miningcore
+    admin:
+      enabled: true
+      emailAddress: ""
+      notifyBlockFound: false
+  persistence:
+    postgres:
+      commandTimeout: 1000
+  paymentProcessing:
+    interval: 600
+  shareRecoveryFileDirectory: /app/recovered-shares/
+  shareRecoveryFileWithHostname: true
+  api:
+    enabled: true
+    listenAddress: "0.0.0.0"
+    port: 5000
+    disableAdminIpWhitelist: true
+    adminIpWhitelist: []
+    disableMetricsIpWhitelist: true
+    metricsIpWhitelist: []
+    rateLimiting:
+      disabled: true
+      rules:
+        - endpoint: 10.200.142.71
+          limit: 500
+          period: 1s
+      ipWhitelist:
+        - "127.0.0.1"
+  statistics:
+    enableReportedHashrate: false
+    updateInterval: 120
+    reportedHashrateInterval: 320
+    hashrateCalculationWindow: 10
+    gcInterval: 4
+    cleanupDays: 30
+  nicehashClusterConfig:
+    enableAutoDiff: true
+  pool: {}

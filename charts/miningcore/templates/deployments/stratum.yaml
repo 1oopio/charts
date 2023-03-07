@@ -1,0 +1,119 @@
+{{- if .Values.stratum.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "miningcore.stratum.fullname" . }}
+  labels:
+    {{- include "miningcore.stratum.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.stratum.autoscaling.enabled }}
+  replicas: {{ .Values.stratum.replicaCount }}
+  {{- end }}
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      {{- include "miningcore.stratum.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.stratum.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "miningcore.stratum.matchLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.stratum.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ template "miningcore.name" . }}-{{ .Values.stratum.name }}
+          securityContext:
+            {{- toYaml .Values.stratum.securityContext | nindent 12 }}
+          image: "{{ .Values.stratum.image.repository }}:{{ .Values.stratum.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.stratum.image.pullPolicy }}
+          env:
+            - name: MC_CLUSTERNAME
+              value: {{ .Values.common.clusterName | quote }}
+            {{- if .Values.stratum.dbConnSecret }}
+            - name: MC_PERSISTENCE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.stratum.dbConnSecret | quote }}
+                  key: host
+            - name: MC_PERSISTENCE_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.stratum.dbConnSecret | quote }}
+                  key: port
+            - name: MC_PERSISTENCE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.stratum.dbConnSecret | quote }}
+                  key: user
+            - name: MC_PERSISTENCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.stratum.dbConnSecret | quote }}
+                  key: password
+            - name: MC_PERSISTENCE_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.stratum.dbConnSecret | quote }}
+                  key: database
+          {{- end }}
+            {{- if .Values.payout.poolEndpointTLSPFXPasswordSecret }}
+            - name: MC_POOL_ENDPOINT_TLS_PFX_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.payout.poolEndpointTLSPFXPasswordSecret | quote }}
+                  key: tlsPfxPassword
+            {{- end }}
+          ports:
+            - name: mc-api
+              containerPort: {{ .Values.common.apiPort }}
+          {{- range .Values.stratum.stratum_ports }}
+            - name: {{ .name }}
+              containerPort: {{ .containerPort }}
+              protocol: {{ .protocol }}
+          {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /app/config.json
+              subPath: config.json
+            {{- if .Values.payout.poolEndpointTLSPFXPasswordSecret }}
+            - name: pool-endpoint-tls-pfx
+              mountPath: /app/pool-endpoint-tls.pfx
+              subPath: tlsPfxFile
+            {{- end }}
+          livenessProbe:
+            initialDelaySeconds: 20
+            tcpSocket:
+              port: {{ (index .Values.stratum.stratum_ports 0).containerPort }}
+          readinessProbe:
+            initialDelaySeconds: 20
+            tcpSocket:
+              port: {{ (index .Values.stratum.stratum_ports 0).containerPort }}
+          resources:
+            {{- toYaml .Values.stratum.resources | nindent 12 }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "miningcore.stratum.fullname" . }}-config
+        {{- if .Values.stratum.poolEndpointTLSPFXPasswordSecret }}
+        - name: pool-endpoint-tls-pfx
+          secret:
+            secretName: {{ .Values.stratum.poolEndpointTLSPFXPasswordSecret | quote }}
+        {{- end }}
+      {{- with .Values.stratum.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.stratum.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

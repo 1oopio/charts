@@ -1,0 +1,83 @@
+{{- if .Values.stats.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "miningcore.stats.fullname" . }}-config
+  labels: 
+  {{- include "miningcore.stats.labels" . | nindent 4 }}
+data:
+  config.json: |
+    {
+      "logging": {
+        "level": "{{ .Values.config.logging.level }}",
+        "enableConsoleLog": {{ .Values.config.logging.enableConsoleLog }},
+        "enableConsoleColors": {{ .Values.config.logging.enableConsoleColors }},
+        "logFile": "{{ .Values.config.logging.logFile }}",
+        "apiLogFile": "{{ .Values.config.logging.apiLogFile }}",
+        "logBaseDirectory": "{{ .Values.config.logging.logBaseDirectory }}",
+        "perPoolLogFile": {{ .Values.config.logging.perPoolLogFile }}
+      },
+      "banning": {
+        "manager": "{{ .Values.config.banning.manager }}",
+        "banOnJunkReceive": {{ .Values.config.banning.banOnJunkReceive }},
+        "banOnInvalidShares": {{ .Values.config.banning.banOnInvalidShares }},
+        "banOnLoginFailure": {{ .Values.config.banning.banOnLoginFailure }}
+      },
+      "notifications": {
+        "enabled": {{ .Values.config.notifications.enabled }},
+        "email": {
+          "host": "{{ .Values.config.notifications.email.host }}",
+          "port": {{ .Values.config.notifications.email.port }},
+          "user": "{{ .Values.config.notifications.email.user }}",
+          "password": "{{ .Values.config.notifications.email.password }}",
+          "fromAddress": "{{ .Values.config.notifications.email.fromAddress }}",
+          "fromName": "{{ .Values.config.notifications.email.fromName }}"
+        },
+        "admin": {
+          "enabled": {{ .Values.config.notifications.admin.enabled }},
+          "emailAddress": "{{ .Values.config.notifications.admin.emailAddress }}",
+          "notifyBlockFound": {{ .Values.config.notifications.admin.notifyBlockFound }}
+        }
+      },
+      "persistence": {
+        "postgres": {
+          "commandTimeout": {{ .Values.config.persistence.postgres.commandTimeout }}
+        }
+      },
+      "paymentProcessing": {
+        "enabled": false,
+        "interval": {{ .Values.config.paymentProcessing.interval }}
+      },
+      "shareRecoveryFileDirectory": "{{ .Values.config.shareRecoveryFileDirectory }}",
+      "shareRecoveryFileWithHostname": {{ .Values.config.shareRecoveryFileWithHostname }},
+      "api": {
+        "enabled": {{ .Values.config.api.enabled }},
+        "listenAddress": "{{ .Values.config.api.listenAddress }}",
+        "port": {{ .Values.common.apiPort }},
+        "disableAdminIpWhitelist": {{ .Values.config.api.disableAdminIpWhitelist }},
+        "adminIpWhitelist": {{ .Values.config.api.adminIpWhitelist }},
+        "disableMetricsIpWhitelist": {{ .Values.config.api.disableMetricsIpWhitelist }},
+        "metricsIpWhitelist": {{ .Values.config.api.metricsIpWhitelist }},
+        "rateLimiting": {
+          "disabled": {{ .Values.config.api.rateLimiting.disabled }},
+          "rules": {{ .Values.config.api.rateLimiting.rules | toJson }},
+          "ipWhitelist": {{ .Values.config.api.rateLimiting.ipWhitelist | toJson }}
+        }
+      },
+      "statistics": {
+        "enableStats": true,
+        "enableReportedHashrate": {{ .Values.config.statistics.enableReportedHashrate }},
+        "updateInterval": {{ .Values.config.statistics.updateInterval }},
+        "reportedHashrateInterval": {{ .Values.config.statistics.reportedHashrateInterval }},
+        "hashrateCalculationWindow": {{ .Values.config.statistics.hashrateCalculationWindow }},
+        "gcInterval": {{ .Values.config.statistics.gcInterval }},
+        "cleanupDays": {{ .Values.config.statistics.cleanupDays }}
+      },
+      "nicehashClusterConfig": {
+        "enableAutoDiff": {{ .Values.config.nicehashClusterConfig.enableAutoDiff }}
+      },
+      "disableAllStratum": true,
+      "pools": [{{ include "miningcore.stats.poolcfg" . }}]
+    }
+
+{{- end }}

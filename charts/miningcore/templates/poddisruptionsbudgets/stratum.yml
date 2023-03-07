@@ -1,0 +1,18 @@
+{{- if .Values.stratum.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "miningcore.stratum.fullname" . }}
+  labels:
+    {{- include "miningcore.stratum.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.stratum.podDisruptionBudget.minAvailable }}
+  minAvailable: {{ . }}
+  {{- end }}
+  {{- with .Values.stratum.podDisruptionBudget.maxUnavailable }}
+  maxUnavailable: {{ . }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "miningcore.stratum.matchLabels" . | nindent 6 }}
+{{- end }}

@@ -1,0 +1,110 @@
+{{- if .Values.payout.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "miningcore.payout.fullname" . }}
+  labels:
+    {{- include "miningcore.payout.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "miningcore.payout.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.payout.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "miningcore.payout.matchLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.payout.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ template "miningcore.name" . }}-{{ .Values.payout.name }}
+          securityContext:
+            {{- toYaml .Values.payout.securityContext | nindent 12 }}
+          image: "{{ .Values.payout.image.repository }}:{{ .Values.payout.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.payout.image.pullPolicy }}
+          env:
+            - name: MC_CLUSTERNAME
+              value: {{ .Values.common.clusterName | quote }}
+            {{- if .Values.payout.dbConnSecret }}
+            - name: MC_PERSISTENCE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.payout.dbConnSecret | quote }}
+                  key: host
+            - name: MC_PERSISTENCE_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.payout.dbConnSecret | quote }}
+                  key: port
+            - name: MC_PERSISTENCE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.payout.dbConnSecret | quote }}
+                  key: user
+            - name: MC_PERSISTENCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.payout.dbConnSecret | quote }}
+                  key: password
+            - name: MC_PERSISTENCE_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.payout.dbConnSecret | quote }}
+                  key: database
+            {{- end }}
+            {{- if .Values.payout.poolEndpointTLSPFXPasswordSecret }}
+            - name: MC_POOL_ENDPOINT_TLS_PFX_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.payout.poolEndpointTLSPFXPasswordSecret | quote }}
+                  key: tlsPfxPassword
+            {{- end }}
+          ports:
+            - name: mc-api
+              containerPort: {{ .Values.common.apiPort }}
+          volumeMounts:
+            - name: config
+              mountPath: /app/config.json
+              subPath: config.json
+            {{- if .Values.payout.poolEndpointTLSPFXPasswordSecret }}
+            - name: pool-endpoint-tls-pfx
+              mountPath: /app/pool-endpoint-tls.pfx
+              subPath: tlsPfxFile
+            {{- end }}
+          resources:
+            {{- toYaml .Values.payout.resources | nindent 12 }}
+          livenessProbe:
+            initialDelaySeconds: 20
+            tcpSocket:
+              port: {{ .Values.common.apiPort }}
+          readinessProbe:
+            initialDelaySeconds: 20
+            tcpSocket:
+              port: {{ .Values.common.apiPort }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "miningcore.payout.fullname" . }}-config
+        {{- if .Values.payout.poolEndpointTLSPFXPasswordSecret }}
+        - name: pool-endpoint-tls-pfx
+          secret:
+            secretName: {{ .Values.payout.poolEndpointTLSPFXPasswordSecret | quote }}
+        {{- end }}
+      {{- with .Values.payout.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.payout.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
