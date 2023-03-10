@@ -19,7 +19,9 @@ jobs:
           helm repo index . --url https://raw.githubusercontent.com/${{ github.repository }}/release
           git config --global user.email "github-bot@1oop.io"
           git config --global user.name "1oop Bot"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git remote set-url origin https://x-access-token:${{ GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git add index.yaml
           git commit -m "release: update chart index"
           git push origin release
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
