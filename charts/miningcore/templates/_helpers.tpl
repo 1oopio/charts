@@ -163,4 +163,28 @@ Merge global pool config with a possible stats specific pool config.
 {{ $poolcfg | toJson }}
 {{- end -}}
 
+{{/*
+Name of the Secret that contains the PostgreSQL password
+*/}}
+{{- define "miningcore.postgresql.secret" -}}
+  {{- if .Values.postgresql.enabled }}
+    {{- include "postgresql.secretName" .Subcharts.postgresql -}}
+  {{- else if .Values.externalDatabase.existingSecretName }}
+    {{- .Values.externalDatabase.existingSecretName }}
+  {{- else }}
+    {{- .Values.existingSecret | default (include "miningcore.fullname" .) }}
+  {{- end }}
+{{- end }}
 
+{{/*
+Name of the key in Secret that contains the PostgreSQL password
+*/}}
+{{- define "miningcore.postgresql.secretKey" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- include "postgresql.userPasswordKey" .Subcharts.postgresql -}}
+  {{- else if .Values.externalDatabase.existingSecretName -}}
+    {{- .Values.externalDatabase.existingSecretKey -}}
+  {{- else -}}
+    password
+  {{- end -}}
+{{- end }}

@@ -71,7 +71,6 @@ stratum:
   podDisruptionBudget:
     maxUnavailable: 50%
   affinity: {}
-  dbConnSecret: mc-db-secret
 
 payout:
   enabled: false
@@ -99,7 +98,6 @@ payout:
   podDisruptionBudget:
     minAvailable: 100%
   affinity: {}
-  dbConnSecret: mc-db-secret
 
 stats:
   enabled: false
@@ -126,7 +124,6 @@ stats:
       cpu: 1000m
       memory: 2.0Gi
   affinity: {}
-  dbConnSecret: mc-db-secret
 
 config:
   logging:
@@ -188,3 +185,17 @@ config:
   nicehashClusterConfig:
     enableAutoDiff: true
   pool: {}
+
+postgresql:
+  enabled: true
+  auth:
+    username: miningcore
+    database: miningcore
+
+externalDatabase:
+  host: localhost
+  port: 5432
+  database: miningcore
+  username: miningcore
+  existingSecretName: ""
+  existingSecretKey: postgresql-password

@@ -34,33 +34,30 @@ spec:
           env:
             - name: MC_CLUSTERNAME
               value: {{ .Values.common.clusterName | quote }}
-            {{- if .Values.stats.dbConnSecret }}
+            {{- if .Values.postgresql.enabled }}
             - name: MC_PERSISTENCE_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.stats.dbConnSecret | quote }}
-                  key: host
+              value: {{ include "postgresql.primary.fullname" .Subcharts.postgresql | quote }}
             - name: MC_PERSISTENCE_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.stats.dbConnSecret | quote }}
-                  key: port
+              value: {{ include "postgresql.service.port" .Subcharts.postgresql | int }}
             - name: MC_PERSISTENCE_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.stats.dbConnSecret | quote }}
-                  key: user
+              value: {{ include "postgresql.username" .Subcharts.postgresql | quote }}
+            - name: MC_PERSISTENCE_DATABASE
+              value: {{ include "postgresql.database" .Subcharts.postgresql | quote }}
+            {{- else }}
+            - name: MC_PERSISTENCE_HOST
+              value: {{ .Values.externalDatabase.host | quote }}
+            - name: MC_PERSISTENCE_PORT
+              value: {{ .Values.externalDatabase.port | quote }}
+            - name: MC_PERSISTENCE_USER
+              value: {{ .Values.externalDatabase.user | quote }}
+            - name: MC_PERSISTENCE_DATABASE
+              value: {{ .Values.externalDatabase.database | quote }}
+            {{- end }}
             - name: MC_PERSISTENCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.stats.dbConnSecret | quote }}
-                  key: password
-            - name: MC_PERSISTENCE_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.stats.dbConnSecret | quote }}
-                  key: database
-            {{- end }}
+                  name: {{ include "miningcore.postgresql.secret" . | quote }}
+                  key: {{ include "miningcore.postgresql.secretKey" . | quote }}
             {{- if .Values.stats.poolEndpointTLSPFXPasswordSecret }}
             - name: MC_POOL_ENDPOINT_TLS_PFX_PASSWORD
               valueFrom:
