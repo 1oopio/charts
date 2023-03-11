@@ -3,7 +3,22 @@ entries:
   miningcore:
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-11T03:02:22.128957544Z"
+    created: "2023-03-11T03:22:38.788359828Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.x.x
+    description: A Helm chart for miningcore
+    digest: 51d824f18c258fd94a9b147da8d4e9b02e192ac3e8f15f77a11442cf5a9b97f0
+    name: miningcore
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/1oopio/charts/release/miningcore-1.1.2.tgz
+    version: 1.1.2
+  - apiVersion: v2
+    appVersion: 2.7.0
+    created: "2023-03-11T03:22:38.782618537Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -18,7 +33,7 @@ entries:
     version: 1.1.1
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-11T03:02:22.122376143Z"
+    created: "2023-03-11T03:22:38.775646849Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -33,7 +48,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-11T03:02:22.115173434Z"
+    created: "2023-03-11T03:22:38.76937796Z"
     description: A Helm chart for miningcore
     digest: 67463545aaaf8b5a1ea5f9adbed6b126261c1f0378cb91a93685927fce66101c
     name: miningcore
@@ -41,4 +56,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/1oopio/charts/release/miningcore-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-11T03:02:22.1129932Z"
+generated: "2023-03-11T03:22:38.768158062Z"
