@@ -146,10 +146,10 @@ config:
       port: 465
       user: ""
       password: ""
-      fromAddress: ""
+      fromAddress: "miningcore@pool.com"
       fromName: miningcore
     admin:
-      enabled: true
+      enabled: false
       emailAddress: ""
       notifyBlockFound: false
   persistence:
