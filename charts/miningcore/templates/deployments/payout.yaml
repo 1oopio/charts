@@ -38,7 +38,7 @@ spec:
             - name: MC_PERSISTENCE_HOST
               value: {{ include "postgresql.primary.fullname" .Subcharts.postgresql | quote }}
             - name: MC_PERSISTENCE_PORT
-              value: {{ include "postgresql.service.port" .Subcharts.postgresql | int }}
+              value: {{ include "postgresql.service.port" .Subcharts.postgresql | quote }}
             - name: MC_PERSISTENCE_USER
               value: {{ include "postgresql.username" .Subcharts.postgresql | quote }}
             - name: MC_PERSISTENCE_DATABASE
