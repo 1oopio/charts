@@ -23,5 +23,5 @@ jobs:
           git add index.yaml
           git commit -m "release: update chart index"
           git push origin release
-        with:
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
