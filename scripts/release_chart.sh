@@ -27,5 +27,6 @@ CHART_VERSION=$(grep version: $CHART_PATH/Chart.yaml | awk '{print $2}')
 git checkout release
 git add $CHART_NAME-$CHART_VERSION.tgz
 git commit -m "release: $CHART_NAME-$CHART_VERSION"
+git pull --rebase
 git push origin release
 git checkout main
