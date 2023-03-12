@@ -19,7 +19,7 @@ spec:
           replacement: {{ .Values.common.clusterName }}
           targetLabel: cluster
         - action: replace
-          replacement: prod
+          replacement: {{ .Values.common.env }}
           targetLabel: miningcore
   namespaceSelector:
     any: true
