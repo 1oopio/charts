@@ -48,7 +48,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: config
-              mountPath: /app/config.json
+              mountPath: /app/config.yml
               subPath: config.yml
           livenessProbe:
             httpGet:
