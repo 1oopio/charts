@@ -46,7 +46,10 @@ spec:
             - name: metrics
               containerPort: {{ .Values.service.metricsPort }}
               protocol: TCP
-
+          volumeMounts:
+            - name: config
+              mountPath: /app/config.json
+              subPath: config.yml
           livenessProbe:
             httpGet:
               path: /
