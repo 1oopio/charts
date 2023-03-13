@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "phantomias.fullname" . }}-config
+  labels: 
+  {{- include "phantomias.labels" . | nindent 4 }}
+data:
+  config.yml: |
+    db:
+      host: {{ .Values.config.db.host }}
+      port: {{ .Values.config.db.port }}
+      user: {{ .Values.config.db.user }}
+      dbname: {{ .Values.config.db.dbname }}
+      sslmode: {{ .Values.config.db.sslmode }}
+    api:
+      listen: 0.0.0.0:{{ .Values.service.port }}
+      cache_ttl: {{ .Values.config.api.cacheTTL }}
+    miningcore:
+      url: {{ .Values.config.miningcore.url }}
+      ws: {{ .Values.config.miningcore.ws }}
+      timeout: {{ .Values.config.miningcore.timeout }}
+    price:
+      coins: {{- include "phantomias.price.coins" . | indent 8 }}
+      vs_currencies: {{ .Values.config.price.vsCurrencies }}
+    metrics:
+      enabled: {{ .Values.config.metrics.enabled }}
+      listen: 0.0.0.0:{{ .Values.service.metricsPort }}
+    pools:
+    {{- if .Values.config.pools }}
+    {{- range $value := .Values.config.pools }}
+      - {{ $value | toYaml | nindent 8 }}
+    {{- end}}
+    {{- end}}
+    {{- if .Values.config.extra }}
+    {{ .Values.config.extra | indent 4 }}
+    {{- end }}
