@@ -24,9 +24,14 @@ helm package $CHART_PATH
 CHART_NAME=$(grep name: $CHART_PATH/Chart.yaml | awk '{print $2}')
 CHART_VERSION=$(grep version: $CHART_PATH/Chart.yaml | awk '{print $2}')
 
+echo "checking out release branch"
 git checkout release
+echo "git add $CHART_NAME-$CHART_VERSION.tgz"
 git add $CHART_NAME-$CHART_VERSION.tgz
+echo "git commit -m "release: $CHART_NAME-$CHART_VERSION""
 git commit -m "release: $CHART_NAME-$CHART_VERSION"
+echo "pull and rebase release branch"
 git pull --rebase
+echo "git push origin release"
 git push origin release
 git checkout main
