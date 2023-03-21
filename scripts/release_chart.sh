@@ -21,8 +21,8 @@ fi
 
 helm package $CHART_PATH
 
-CHART_NAME=$(grep name: $CHART_PATH/Chart.yaml | awk '{print $2}')
-CHART_VERSION=$(grep version: $CHART_PATH/Chart.yaml | awk '{print $2}')
+CHART_NAME=$(grep name: $CHART_PATH/Chart.yaml | awk '{print $2}' | head -n1)
+CHART_VERSION=$(grep version: $CHART_PATH/Chart.yaml | awk '{print $2}' | head -n1)
 
 echo "checking out release branch"
 git checkout release
