@@ -39,13 +39,7 @@ stratum:
       nodePort: 30000
   service:
     type: NodePort
-  resources:
-    requests:
-      cpu: 80m
-      memory: 300Mi
-    limits:
-      cpu: 100m
-      memory: 500Mi
+  resources: {}
   autoscaling:
     enabled: true
     minReplicas: 1
@@ -80,13 +74,7 @@ payout:
     repository: "ghcr.io/1oopio/miningcore:pr-1"
     pullPolicy: IfNotPresent
     tag: ""
-  resources:
-    requests:
-      cpu: 500m
-      memory: 500Mi
-    limits:
-      cpu: 1000m
-      memory: 2.0Gi
+  resources: {}
   nameOverride: ""
   fullnameOverride: ""
   podAnnotations: {}
@@ -117,13 +105,7 @@ stats:
     runAsNonRoot: true
     runAsUser: 10001
     runAsGroup: 10001
-  resources:
-    requests:
-      cpu: 500m
-      memory: 500Mi
-    limits:
-      cpu: 1000m
-      memory: 2.0Gi
+  resources: {}
   affinity: {}
 
 config:
