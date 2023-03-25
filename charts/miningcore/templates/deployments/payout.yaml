@@ -65,8 +65,8 @@ spec:
                   name: {{ .Values.payout.poolEndpointTLSPFXPasswordSecret | quote }}
                   key: tlsPfxPassword
             {{- end }}
-            {{- if .Values.extraEnvVars }}
-            {{- include "common.tplvalues.render" (dict "value" .Values.extraEnvVars "context" $) | nindent 12 }}
+            {{- if .Values.payout.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.payout.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
           ports:
             - name: mc-api
