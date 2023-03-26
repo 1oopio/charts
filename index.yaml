@@ -3,7 +3,7 @@ entries:
   miningcore:
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-26T00:45:44.051262318Z"
+    created: "2023-03-26T01:15:00.265938667Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -23,7 +23,7 @@ entries:
     version: 1.1.7
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-26T00:45:44.043072926Z"
+    created: "2023-03-26T01:15:00.259995148Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -43,7 +43,7 @@ entries:
     version: 1.1.6
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-26T00:45:44.037248461Z"
+    created: "2023-03-26T01:15:00.253265313Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -63,7 +63,7 @@ entries:
     version: 1.1.5
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-26T00:45:44.030110482Z"
+    created: "2023-03-26T01:15:00.247027189Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -78,7 +78,7 @@ entries:
     version: 1.1.4
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-26T00:45:44.024077314Z"
+    created: "2023-03-26T01:15:00.241666182Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -93,7 +93,7 @@ entries:
     version: 1.1.3
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-26T00:45:44.016317928Z"
+    created: "2023-03-26T01:15:00.234002728Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -108,7 +108,7 @@ entries:
     version: 1.1.2
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-26T00:45:44.011075869Z"
+    created: "2023-03-26T01:15:00.228164212Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -123,7 +123,7 @@ entries:
     version: 1.1.1
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-26T00:45:44.003920689Z"
+    created: "2023-03-26T01:15:00.221328775Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -138,7 +138,7 @@ entries:
     version: 1.1.0
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-03-26T00:45:43.99769462Z"
+    created: "2023-03-26T01:15:00.215390856Z"
     description: A Helm chart for miningcore
     digest: 67463545aaaf8b5a1ea5f9adbed6b126261c1f0378cb91a93685927fce66101c
     name: miningcore
@@ -149,7 +149,17 @@ entries:
   phantomias:
   - apiVersion: v2
     appVersion: 0.0.34
-    created: "2023-03-26T00:45:44.056795079Z"
+    created: "2023-03-26T01:15:00.272171791Z"
+    description: A Helm chart for Kubernetes
+    digest: 84ea25bf50f08300cf5db6f32f79dd6d83b4433d5e1b56e00a0eefd05726c0c2
+    name: phantomias
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/1oopio/charts/release/phantomias-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
+    appVersion: 0.0.34
+    created: "2023-03-26T01:15:00.271659281Z"
     description: A Helm chart for Kubernetes
     digest: 58fbf3d33c548cbff28f4ff6161baad9e08d410a28bf1a3c58002f5374120541
     name: phantomias
@@ -159,7 +169,7 @@ entries:
     version: 0.1.8
   - apiVersion: v2
     appVersion: 0.0.34
-    created: "2023-03-26T00:45:44.05597907Z"
+    created: "2023-03-26T01:15:00.271146671Z"
     description: A Helm chart for Kubernetes
     digest: 24a9535b84244039198fd6c431b7e3d15363495d8f1be13cd7999b22911b8ae4
     name: phantomias
@@ -169,7 +179,7 @@ entries:
     version: 0.1.7
   - apiVersion: v2
     appVersion: 0.0.34
-    created: "2023-03-26T00:45:44.055354463Z"
+    created: "2023-03-26T01:15:00.27062856Z"
     description: A Helm chart for Kubernetes
     digest: 3f6219b2f7aa6d29cf8c488b4fde75c01a7280e108de8e87a266987a4c40934f
     name: phantomias
@@ -179,7 +189,7 @@ entries:
     version: 0.1.6
   - apiVersion: v2
     appVersion: 0.0.34
-    created: "2023-03-26T00:45:44.054630855Z"
+    created: "2023-03-26T01:15:00.27008955Z"
     description: A Helm chart for Kubernetes
     digest: 030427be90878e30380845f36e4f59146c583cb96d1f82f5c8ef470c910e74f0
     name: phantomias
@@ -189,7 +199,7 @@ entries:
     version: 0.1.5
   - apiVersion: v2
     appVersion: 0.0.33
-    created: "2023-03-26T00:45:44.053867747Z"
+    created: "2023-03-26T01:15:00.269254733Z"
     description: A Helm chart for Kubernetes
     digest: db81d4e12359d5787052b502c3d8e71f31a316c55c37c95dff9f4055836b15d4
     name: phantomias
@@ -199,7 +209,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 0.0.33
-    created: "2023-03-26T00:45:44.053346841Z"
+    created: "2023-03-26T01:15:00.268559319Z"
     description: A Helm chart for Kubernetes
     digest: ae7f37a38be5b13767479417a4504df5b811787110f989d0d1bf1e8a80efd901
     name: phantomias
@@ -209,7 +219,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 0.0.33
-    created: "2023-03-26T00:45:44.052818135Z"
+    created: "2023-03-26T01:15:00.267876305Z"
     description: A Helm chart for Kubernetes
     digest: a7153e0bef6ab89215727e5eb8b14f1c84d59510bcf9618d96e416533ef2fad1
     name: phantomias
@@ -219,7 +229,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 0.0.33
-    created: "2023-03-26T00:45:44.052300029Z"
+    created: "2023-03-26T01:15:00.266976587Z"
     description: A Helm chart for Kubernetes
     digest: 95425da7d3cd71e7dba6ea4ca57fecef7776122a9e42a79e1e7aeb51e6a80709
     name: phantomias
@@ -229,7 +239,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 0.0.33
-    created: "2023-03-26T00:45:44.051825324Z"
+    created: "2023-03-26T01:15:00.266448977Z"
     description: A Helm chart for Kubernetes
     digest: 066820fec70cef025afd7c2f31883454c689fdd219fa7219bdb3ce2d8d60c404
     name: phantomias
@@ -237,4 +247,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/1oopio/charts/release/phantomias-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-26T00:45:43.995113691Z"
+generated: "2023-03-26T01:15:00.213412917Z"
