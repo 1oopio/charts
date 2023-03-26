@@ -14,7 +14,7 @@ spec:
       {{- include "phantomias.selectorLabels" . | nindent 6 }}
   endpoints:
     - port: metrics
-      path: /probes
+      path: /metrics
   namespaceSelector:
     any: true
 {{- end }}
